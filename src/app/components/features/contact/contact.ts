@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -6,22 +6,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { HttpClient } from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
-
-interface ContactInfo {
-  icon: string;
-  title: string;
-  value: string;
-  link?: string;
-  type: 'email' | 'phone' | 'location' | 'social';
-}
-
-interface SocialLink {
-  icon: string;
-  name: string;
-  url: string;
-  color: string;
-}
+import { PORTFOLIO_CONFIG } from '../../../config/portfolio.config';
+import { LanguageService } from '../../../services/language.service';
 
 @Component({
   selector: 'app-contact',
@@ -42,49 +30,28 @@ export class Contact {
   contactForm: FormGroup;
   isSubmitting = false;
 
-  contactInfo: ContactInfo[] = [
-    {
-      icon: 'email',
-      title: 'Email',
-      value: 'adryan.contatoprofissional@gmail.com',
-      link: 'mailto:adryan.contatoprofissional@gmail.com',
-      type: 'email',
-    },
-    {
-      icon: 'phone',
-      title: 'Telefone',
-      value: '+55 (14) 99872-4427',
-      link: 'tel:+5514998724427',
-      type: 'phone',
-    },
-    {
-      icon: 'location_on',
-      title: 'Localização',
-      value: 'Ourinhos, SP',
-      type: 'location',
-    },
-  ];
+  protected readonly langService = inject(LanguageService);
+  private readonly fb = inject(FormBuilder);
+  private readonly snackBar = inject(MatSnackBar);
+  private readonly logger = inject(NGXLogger);
+  private readonly http = inject(HttpClient);
 
-  socialLinks: SocialLink[] = [
-    {
-      icon: 'devicon-github-original',
-      name: 'GitHub',
-      url: 'https://github.com/MrClaro',
-      color: '#333',
-    },
-    {
-      icon: 'devicon-linkedin-plain',
-      name: 'LinkedIn',
-      url: 'https://www.linkedin.com/in/adryan-claro/',
-      color: '#0077B5',
-    },
-  ];
+  get contactInfo() {
+    this.langService.currentLanguage();
+    return PORTFOLIO_CONFIG.contactInfo.map((info) => ({
+      icon: info.icon,
+      title: this.langService.translate(info.title),
+      value: info.value,
+      link: info.link,
+      type: info.type,
+    }));
+  }
 
-  constructor(
-    private fb: FormBuilder,
-    private snackBar: MatSnackBar,
-    private logger: NGXLogger,
-  ) {
+  get socialLinks() {
+    return PORTFOLIO_CONFIG.socialLinks;
+  }
+
+  constructor() {
     this.contactForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
@@ -97,22 +64,56 @@ export class Contact {
     if (this.contactForm.valid && !this.isSubmitting) {
       this.isSubmitting = true;
 
-      //TODO: Implementar lógica real de envio de email
-      setTimeout(() => {
-        this.logger.info('Formulário de contato enviado com sucesso.', this.contactForm.value);
+      const emailRecipient = PORTFOLIO_CONFIG.profile.email;
+      const body = {
+        name: this.contactForm.value.name,
+        email: this.contactForm.value.email,
+        _subject: `[Portfólio Contato] ${this.contactForm.value.subject}`,
+        message: this.contactForm.value.message,
+      };
 
-        this.snackBar.open('Mensagem enviada com sucesso! Retornarei em breve.', 'Fechar', {
-          duration: 5000,
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-          panelClass: ['success-snackbar'],
+      this.http.post(`https://formsubmit.co/ajax/${emailRecipient}`, body)
+        .subscribe({
+          next: () => {
+            this.logger.info('Formulário de contato enviado com sucesso via FormSubmit.');
+
+            const successMsg = this.langService.isPt()
+              ? 'Mensagem enviada com sucesso! Retornarei em breve.'
+              : 'Message sent successfully! I will get back to you soon.';
+
+            this.snackBar.open(successMsg, this.langService.isPt() ? 'Fechar' : 'Close', {
+              duration: 5000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              panelClass: ['success-snackbar'],
+            });
+
+            this.contactForm.reset();
+            this.isSubmitting = false;
+          },
+          error: (error) => {
+            this.logger.error('Erro ao enviar formulário de contato:', error);
+
+            const errorMsg = this.langService.isPt()
+              ? 'Ocorreu um erro ao enviar sua mensagem. Tente novamente mais tarde.'
+              : 'An error occurred while sending your message. Please try again later.';
+
+            this.snackBar.open(errorMsg, this.langService.isPt() ? 'Fechar' : 'Close', {
+              duration: 5000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              panelClass: ['error-snackbar'],
+            });
+
+            this.isSubmitting = false;
+          }
         });
-
-        this.contactForm.reset();
-        this.isSubmitting = false;
-      }, 2000);
     } else {
-      this.snackBar.open('Por favor, preencha todos os campos corretamente.', 'Fechar', {
+      const errorMsg = this.langService.isPt()
+        ? 'Por favor, preencha todos os campos corretamente.'
+        : 'Please fill in all fields correctly.';
+
+      this.snackBar.open(errorMsg, this.langService.isPt() ? 'Fechar' : 'Close', {
         duration: 3000,
         horizontalPosition: 'center',
         verticalPosition: 'top',
@@ -128,7 +129,11 @@ export class Contact {
     link.download = 'curriculo_adryan_claro.pdf';
     link.click();
 
-    this.snackBar.open('Download do currículo iniciado!', 'Fechar', {
+    const resumeMsg = this.langService.isPt()
+      ? 'Download do currículo iniciado!'
+      : 'Resume download started!';
+
+    this.snackBar.open(resumeMsg, this.langService.isPt() ? 'Fechar' : 'Close', {
       duration: 3000,
       horizontalPosition: 'center',
       verticalPosition: 'top',

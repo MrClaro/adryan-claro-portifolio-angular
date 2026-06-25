@@ -4,9 +4,12 @@ $red-fire: #cc0000;
 $charcoal-gray: #333333;
 $burgundy: #800000;
 
-$text-secondary: #555555;
-$border-subtle: rgba($charcoal-gray, 0.12);
-$shadow-soft: rgba($black-absolute, 0.08);
+$dark-bg-start: #060609;
+$dark-bg-end: #0d0d12;
+$text-light: #ffffff;
+$text-gray: #a3a3a3;
+$glass-bg: rgba(17, 17, 24, 0.65);
+$glass-border: rgba(255, 255, 255, 0.05);
 
 /* ========================================
     SEÇÃO CONTATO
@@ -15,7 +18,8 @@ $shadow-soft: rgba($black-absolute, 0.08);
   width: 100%;
   max-width: 100vw;
   padding: 5rem 2rem;
-  background: linear-gradient(180deg, $primary-color 0%, rgba($primary-color, 0.98) 100%);
+  background: linear-gradient(180deg, $dark-bg-start 0%, $dark-bg-end 100%);
+  color: $text-light;
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
@@ -28,9 +32,19 @@ $shadow-soft: rgba($black-absolute, 0.08);
     width: 100%;
     height: 100%;
     background:
-      radial-gradient(circle at 30% 20%, rgba($red-fire, 0.04) 0%, transparent 50%),
-      radial-gradient(circle at 70% 80%, rgba($burgundy, 0.04) 0%, transparent 50%);
+      radial-gradient(circle at 10% 20%, rgba($burgundy, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 90% 80%, rgba($red-fire, 0.1) 0%, transparent 50%);
     pointer-events: none;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba($red-fire, 0.3), transparent);
   }
 }
 
@@ -55,7 +69,7 @@ $shadow-soft: rgba($black-absolute, 0.08);
   .section-title {
     font-size: clamp(2rem, 4vw, 3rem);
     font-weight: 800;
-    color: $black-absolute;
+    color: $text-light;
     margin: 0 0 1rem 0;
     letter-spacing: -1px;
     position: relative;
@@ -72,12 +86,13 @@ $shadow-soft: rgba($black-absolute, 0.08);
       height: 4px;
       background: linear-gradient(90deg, $red-fire 0%, $burgundy 100%);
       border-radius: 2px;
+      box-shadow: 0 0 10px rgba($red-fire, 0.5);
     }
   }
 
   .section-subtitle {
     font-size: clamp(1rem, 2vw, 1.2rem);
-    color: $text-secondary;
+    color: $text-gray;
     max-width: 600px;
     margin: 1.5rem auto 0;
     line-height: 1.7;
@@ -114,14 +129,14 @@ $shadow-soft: rgba($black-absolute, 0.08);
     .info-title {
       font-size: clamp(1.5rem, 3vw, 1.8rem);
       font-weight: 700;
-      color: $black-absolute;
+      color: $text-light;
       margin: 0 0 0.5rem 0;
       letter-spacing: -0.5px;
     }
 
     .info-subtitle {
       font-size: clamp(0.9rem, 2vw, 1rem);
-      color: $text-secondary;
+      color: $text-gray;
       margin: 0;
       line-height: 1.6;
     }
@@ -143,12 +158,14 @@ $shadow-soft: rgba($black-absolute, 0.08);
   align-items: center;
   gap: 1.5rem;
   padding: 1.5rem;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9));
+  background: $glass-bg;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-radius: 16px;
-  border: 1px solid $border-subtle;
+  border: 1px solid $glass-border;
   box-shadow:
-    0 4px 15px $shadow-soft,
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    0 4px 15px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
   transition: all 0.3s ease;
   opacity: 0;
   animation: slideInLeft 0.6s ease-out forwards;
@@ -159,17 +176,18 @@ $shadow-soft: rgba($black-absolute, 0.08);
   &:hover {
     transform: translateX(8px);
     box-shadow:
-      0 8px 25px rgba($red-fire, 0.12),
-      inset 0 1px 0 rgba(255, 255, 255, 1);
-    border-color: rgba($red-fire, 0.2);
+      0 8px 25px rgba($red-fire, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border-color: rgba($red-fire, 0.3);
 
     .info-icon-wrapper {
       background: linear-gradient(135deg, $red-fire, $burgundy);
       transform: scale(1.1);
-      box-shadow: 0 6px 20px rgba($red-fire, 0.3);
+      box-shadow: 0 6px 20px rgba($red-fire, 0.35);
+      border-color: transparent;
 
       .info-icon {
-        color: $primary-color;
+        color: #ffffff;
       }
     }
   }
@@ -182,15 +200,15 @@ $shadow-soft: rgba($black-absolute, 0.08);
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 1), rgba($primary-color, 0.8));
-    box-shadow: 0 4px 12px $shadow-soft;
+    background: rgba(255, 255, 255, 0.03);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    border: 1px solid $border-subtle;
+    border: 1px solid rgba(255, 255, 255, 0.05);
     flex-shrink: 0;
 
     .info-icon {
       font-size: 26px;
-      color: $charcoal-gray;
+      color: #d1d5db;
       transition: color 0.3s ease;
     }
   }
@@ -200,17 +218,17 @@ $shadow-soft: rgba($black-absolute, 0.08);
     min-width: 0;
 
     .info-label {
-      font-size: 0.9rem;
-      color: $text-secondary;
+      font-size: 0.85rem;
+      color: $text-gray;
       margin: 0 0 0.3rem 0;
-      font-weight: 500;
+      font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
 
     .info-value {
       font-size: 1.1rem;
-      color: $black-absolute;
+      color: #ffffff;
       margin: 0;
       font-weight: 600;
       line-height: 1.4;
@@ -238,7 +256,7 @@ $shadow-soft: rgba($black-absolute, 0.08);
   .social-title {
     font-size: clamp(1.1rem, 2.5vw, 1.3rem);
     font-weight: 600;
-    color: $black-absolute;
+    color: $text-light;
     margin: 0 0 1rem 0;
     letter-spacing: -0.3px;
   }
@@ -255,15 +273,15 @@ $shadow-soft: rgba($black-absolute, 0.08);
     align-items: center;
     gap: 0.6rem;
     padding: 0.8rem 1.5rem;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9));
-    border: 1px solid $border-subtle;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 12px;
     font-size: 0.95rem;
     font-weight: 600;
-    color: $charcoal-gray;
+    color: #d1d5db;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 8px $shadow-soft;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     opacity: 0;
     animation: slideInLeft 0.6s ease-out forwards;
     box-sizing: border-box;
@@ -277,8 +295,8 @@ $shadow-soft: rgba($black-absolute, 0.08);
 
     &:hover {
       transform: translateY(-4px);
-      background: linear-gradient(135deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.95));
-      box-shadow: 0 8px 20px rgba($red-fire, 0.15);
+      background: rgba(255, 255, 255, 0.06);
+      box-shadow: 0 8px 20px rgba($red-fire, 0.2);
       border-color: rgba($red-fire, 0.3);
       color: $red-fire;
 
@@ -304,9 +322,9 @@ $shadow-soft: rgba($black-absolute, 0.08);
   .download-btn {
     width: 100%;
     background: linear-gradient(135deg, $red-fire 0%, $burgundy 100%);
-    color: $primary-color;
+    color: #ffffff;
     padding: 1.2rem 2rem;
-    font-weight: 600;
+    font-weight: 700;
     border-radius: 14px;
     font-size: 1rem;
     box-shadow:
@@ -331,7 +349,7 @@ $shadow-soft: rgba($black-absolute, 0.08);
       left: -100%;
       width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
       transition: left 0.6s ease;
     }
 
@@ -349,7 +367,7 @@ $shadow-soft: rgba($black-absolute, 0.08);
     &:hover {
       transform: translateY(-4px);
       box-shadow:
-        0 10px 30px rgba($red-fire, 0.4),
+        0 10px 30px rgba($red-fire, 0.45),
         inset 0 1px 0 rgba(255, 255, 255, 0.3);
 
       &::before {
@@ -367,15 +385,16 @@ $shadow-soft: rgba($black-absolute, 0.08);
     FORMULÁRIO
 ======================================== */
 .contact-form-wrapper {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9));
+  background: $glass-bg;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-radius: 24px;
   padding: 3rem;
-  border: 1px solid $border-subtle;
+  border: 1px solid $glass-border;
   box-shadow:
-    0 8px 30px $shadow-soft,
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    0 8px 30px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
   animation: slideInRight 0.8s ease-out;
-  backdrop-filter: blur(10px);
   width: 100%;
   box-sizing: border-box;
   min-width: 0;
@@ -386,14 +405,14 @@ $shadow-soft: rgba($black-absolute, 0.08);
     .form-title {
       font-size: clamp(1.5rem, 3vw, 1.8rem);
       font-weight: 700;
-      color: $black-absolute;
+      color: $text-light;
       margin: 0 0 0.5rem 0;
       letter-spacing: -0.5px;
     }
 
     .form-subtitle {
       font-size: clamp(0.9rem, 2vw, 1rem);
-      color: $text-secondary;
+      color: $text-gray;
       margin: 0;
       line-height: 1.6;
     }
@@ -412,7 +431,7 @@ $shadow-soft: rgba($black-absolute, 0.08);
 
     ::ng-deep {
       .mat-mdc-text-field-wrapper {
-        background: rgba(255, 255, 255, 0.8);
+        background: rgba(0, 0, 0, 0.25) !important;
         border-radius: 12px;
         width: 100%;
       }
@@ -424,7 +443,7 @@ $shadow-soft: rgba($black-absolute, 0.08);
       .mdc-notched-outline__leading,
       .mdc-notched-outline__notch,
       .mdc-notched-outline__trailing {
-        border-color: $border-subtle !important;
+        border-color: rgba(255, 255, 255, 0.08) !important;
       }
 
       .mat-mdc-form-field.mat-focused {
@@ -441,23 +460,35 @@ $shadow-soft: rgba($black-absolute, 0.08);
       }
 
       .mat-mdc-input-element {
-        color: $black-absolute;
+        color: #ffffff !important;
         font-weight: 500;
+
+        &::placeholder {
+          color: rgba(255, 255, 255, 0.3) !important;
+        }
+      }
+
+      .mat-mdc-floating-label {
+        color: $text-gray !important;
       }
 
       .mat-icon {
-        color: $charcoal-gray;
+        color: $text-gray;
       }
 
       .mat-mdc-form-field.mat-focused .mat-icon {
         color: $red-fire;
+      }
+
+      .mat-mdc-form-field-error {
+        color: #f44336 !important;
       }
     }
   }
 
   .submit-btn {
     background: linear-gradient(135deg, $red-fire 0%, $burgundy 100%);
-    color: $primary-color;
+    color: #ffffff;
     padding: 1.2rem 2.5rem;
     font-weight: 600;
     border-radius: 14px;
@@ -486,7 +517,7 @@ $shadow-soft: rgba($black-absolute, 0.08);
       left: -100%;
       width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
       transition: left 0.6s ease;
     }
 
@@ -516,7 +547,7 @@ $shadow-soft: rgba($black-absolute, 0.08);
     &:not(:disabled):hover {
       transform: translateY(-4px);
       box-shadow:
-        0 10px 30px rgba($red-fire, 0.4),
+        0 10px 30px rgba($red-fire, 0.45),
         inset 0 1px 0 rgba(255, 255, 255, 0.3);
 
       &::before {
@@ -525,7 +556,7 @@ $shadow-soft: rgba($black-absolute, 0.08);
     }
 
     &:disabled {
-      opacity: 0.7;
+      opacity: 0.6;
       cursor: not-allowed;
     }
 
