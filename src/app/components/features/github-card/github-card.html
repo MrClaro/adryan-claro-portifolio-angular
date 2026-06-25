@@ -1,11 +1,24 @@
 <div class="github-card-wrapper" (click)="openGithub()">
   <div class="mockup-header">
-    <img
-      [src]="imageUrl || 'https://placehold.co/600x350/1a1a2e/ffffff?text=' + repoName"
-      [alt]="'Visualização do projeto ' + repoName"
-      class="project-mockup"
-      loading="lazy"
-    />
+    @if (imageUrl && !imageUrl.includes('placehold.co')) {
+      <img
+        [src]="imageUrl"
+        [alt]="'Visualização do projeto ' + repoName"
+        class="project-mockup"
+        loading="lazy"
+      />
+    } @else {
+      <!-- Beautiful fallback cover with language-colored gradient -->
+      <div class="project-mockup fallback-gradient" [style.background]="getGradient()">
+        <div class="fallback-hat">
+          <svg viewBox="0 0 24 24" width="48" height="48" fill="currentColor">
+            <path d="M19 17H5c-1.1 0-2 .9-2 2s.9 2 2 2h14c1.1 0 2-.9 2-2s-.9-2-2-2zm-2-2V5c0-1.1-.9-2-2-2H9c-1.1 0-2 .9-2 2v10h10z" />
+          </svg>
+        </div>
+        <span class="fallback-title">{{ repoName }}</span>
+        <i [class]="deviconClass + ' fallback-icon'"></i>
+      </div>
+    }
 
     <div class="mockup-overlay"></div>
 
@@ -52,6 +65,14 @@
     <p class="repo-description">
       {{ description || 'Nenhuma descrição disponível para este projeto.' }}
     </p>
+ 
+    @if (topics && topics.length > 0) {
+      <div class="repo-topics">
+        @for (topic of topics.slice(0, 4); track topic) {
+          <span class="topic-tag">{{ topic }}</span>
+        }
+      </div>
+    }
 
     <div class="metadata-row">
       <span class="metadata-item stars-count">

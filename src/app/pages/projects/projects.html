@@ -3,9 +3,11 @@
     <!-- Header -->
     <div class="projects-header">
       <div class="header-content">
-        <h1 class="section-title">Meus Projetos</h1>
+        <h1 class="section-title">
+          {{ langService.isPt() ? 'Meus Projetos' : 'My Projects' }}
+        </h1>
         <p class="section-subtitle">
-          Explore minha coleção de projetos open-source e experimentos técnicos
+          {{ langService.isPt() ? 'Explore minha coleção de projetos open-source e experimentos técnicos' : 'Explore my collection of open-source projects and technical experiments' }}
         </p>
       </div>
 
@@ -16,7 +18,9 @@
             <mat-icon class="stat-icon">folder_open</mat-icon>
             <div class="stat-content">
               <span class="stat-value">{{ totalProjects }}</span>
-              <span class="stat-label">Projetos</span>
+              <span class="stat-label">
+                {{ langService.isPt() ? 'Projetos' : 'Projects' }}
+              </span>
             </div>
           </div>
 
@@ -32,7 +36,9 @@
             <mat-icon class="stat-icon">code</mat-icon>
             <div class="stat-content">
               <span class="stat-value">{{ languages.length }}</span>
-              <span class="stat-label">Tecnologias</span>
+              <span class="stat-label">
+                {{ langService.isPt() ? 'Tecnologias' : 'Technologies' }}
+              </span>
             </div>
           </div>
         </div>
@@ -45,12 +51,14 @@
         <div class="filters-container">
           <!-- Search -->
           <mat-form-field appearance="outline" class="search-field">
-            <mat-label>Buscar projetos</mat-label>
+            <mat-label>
+              {{ langService.isPt() ? 'Buscar projetos' : 'Search projects' }}
+            </mat-label>
             <input
               matInput
               [(ngModel)]="searchTerm"
               (ngModelChange)="onSearchChange($event)"
-              placeholder="Nome, descrição, tecnologia..."
+              [placeholder]="langService.isPt() ? 'Nome, descrição, tecnologia...' : 'Name, description, technology...'"
               autocomplete="off"
             />
             <mat-icon matPrefix>search</mat-icon>
@@ -59,7 +67,7 @@
                 mat-icon-button
                 matSuffix
                 (click)="searchTerm = ''; onSearchChange('')"
-                aria-label="Limpar busca"
+                [attr.aria-label]="langService.isPt() ? 'Limpar busca' : 'Clear search'"
               >
                 <mat-icon>close</mat-icon>
               </button>
@@ -68,9 +76,13 @@
 
           <!-- Language Filter -->
           <mat-form-field appearance="outline" class="language-field">
-            <mat-label>Filtrar por tecnologia</mat-label>
+            <mat-label>
+              {{ langService.isPt() ? 'Filtrar por tecnologia' : 'Filter by technology' }}
+            </mat-label>
             <mat-select [(ngModel)]="selectedLanguage" (ngModelChange)="onLanguageChange($event)">
-              <mat-option value="all">Todas as tecnologias</mat-option>
+              <mat-option value="all">
+                {{ langService.isPt() ? 'Todas as tecnologias' : 'All technologies' }}
+              </mat-option>
               @for (lang of languages; track lang) {
                 <mat-option [value]="lang">
                   {{ lang }}
@@ -84,7 +96,7 @@
           @if (hasFiltersApplied) {
             <button mat-stroked-button class="clear-filters-btn" (click)="clearFilters()">
               <mat-icon>clear_all</mat-icon>
-              Limpar Filtros
+              {{ langService.isPt() ? 'Limpar Filtros' : 'Clear Filters' }}
             </button>
           }
         </div>
@@ -92,11 +104,13 @@
         <!-- Active Filters Chips -->
         @if (hasFiltersApplied) {
           <div class="active-filters">
-            <span class="filters-label">Filtros ativos:</span>
+            <span class="filters-label">
+              {{ langService.isPt() ? 'Filtros ativos:' : 'Active filters:' }}
+            </span>
             <mat-chip-set aria-label="Filtros ativos">
               @if (searchTerm) {
                 <mat-chip (removed)="searchTerm = ''; onSearchChange('')">
-                  Busca: "{{ searchTerm }}"
+                  {{ langService.isPt() ? 'Busca' : 'Search' }}: "{{ searchTerm }}"
                   <button matChipRemove>
                     <mat-icon>cancel</mat-icon>
                   </button>
@@ -104,7 +118,7 @@
               }
               @if (selectedLanguage !== 'all') {
                 <mat-chip (removed)="onLanguageChange('all')">
-                  Tecnologia: {{ selectedLanguage }}
+                  {{ langService.isPt() ? 'Tecnologia' : 'Technology' }}: {{ selectedLanguage }}
                   <button matChipRemove>
                     <mat-icon>cancel</mat-icon>
                   </button>
@@ -117,8 +131,13 @@
         <!-- Results Count -->
         <div class="results-info">
           <p class="results-text">
-            Exibindo <strong>{{ displayedProjects.length }}</strong> de
-            <strong>{{ filteredProjects.length }}</strong> projeto(s)
+            @if (langService.isPt()) {
+              Exibindo <strong>{{ displayedProjects.length }}</strong> de
+              <strong>{{ filteredProjects.length }}</strong> projeto(s)
+            } @else {
+              Showing <strong>{{ displayedProjects.length }}</strong> of
+              <strong>{{ filteredProjects.length }}</strong> project(s)
+            }
           </p>
         </div>
       </div>
@@ -128,7 +147,9 @@
     @if (isLoading) {
       <div class="loading-state">
         <mat-spinner diameter="60"></mat-spinner>
-        <p class="loading-text">Carregando projetos...</p>
+        <p class="loading-text">
+          {{ langService.isPt() ? 'Carregando projetos...' : 'Loading projects...' }}
+        </p>
       </div>
     }
 
@@ -136,11 +157,15 @@
     @if (hasError && !isLoading) {
       <div class="error-state">
         <mat-icon class="error-icon">error_outline</mat-icon>
-        <h3 class="error-title">Ops! Algo deu errado</h3>
-        <p class="error-message">{{ errorMessage }}</p>
+        <h3 class="error-title">
+          {{ langService.isPt() ? 'Ops! Algo deu errado' : 'Oops! Something went wrong' }}
+        </h3>
+        <p class="error-message">
+          {{ langService.isPt() ? errorMessage : 'Could not load projects. Please try again later.' }}
+        </p>
         <button mat-flat-button class="retry-btn" (click)="retryLoad()">
           <mat-icon>refresh</mat-icon>
-          Tentar Novamente
+          {{ langService.isPt() ? 'Tentar Novamente' : 'Try Again' }}
         </button>
       </div>
     }
@@ -149,13 +174,15 @@
     @if (!isLoading && !hasError && filteredProjects.length === 0) {
       <div class="empty-state">
         <mat-icon class="empty-icon">search_off</mat-icon>
-        <h3 class="empty-title">Nenhum projeto encontrado</h3>
+        <h3 class="empty-title">
+          {{ langService.isPt() ? 'Nenhum projeto encontrado' : 'No projects found' }}
+        </h3>
         <p class="empty-message">
-          Tente ajustar os filtros ou limpar a busca para ver mais resultados.
+          {{ langService.isPt() ? 'Tente ajustar os filtros ou limpar a busca para ver mais resultados.' : 'Try adjusting the filters or clearing the search to see more results.' }}
         </p>
         <button mat-stroked-button class="clear-btn" (click)="clearFilters()">
           <mat-icon>clear_all</mat-icon>
-          Limpar Filtros
+          {{ langService.isPt() ? 'Limpar Filtros' : 'Clear Filters' }}
         </button>
       </div>
     }
@@ -173,6 +200,7 @@
             [date]="project.date"
             [githubUrl]="project.githubUrl"
             [imageUrl]="project.imageUrl"
+            [topics]="project.topics || []"
             [style.animation-delay]="getAnimationDelay(i)"
             class="project-card-item"
           >
@@ -191,7 +219,7 @@
             class="pagination-btn"
             [disabled]="currentPage === 1"
             (click)="previousPage()"
-            aria-label="Página anterior"
+            [attr.aria-label]="langService.isPt() ? 'Página anterior' : 'Previous page'"
           >
             <mat-icon>chevron_left</mat-icon>
           </button>
@@ -218,14 +246,16 @@
             class="pagination-btn"
             [disabled]="currentPage === totalPages"
             (click)="nextPage()"
-            aria-label="Próxima página"
+            [attr.aria-label]="langService.isPt() ? 'Próxima página' : 'Next page'"
           >
             <mat-icon>chevron_right</mat-icon>
           </button>
         </div>
 
         <!-- Page Info -->
-        <p class="page-info">Página {{ currentPage }} de {{ totalPages }}</p>
+        <p class="page-info">
+          {{ langService.isPt() ? 'Página' : 'Page' }} {{ currentPage }} {{ langService.isPt() ? 'de' : 'of' }} {{ totalPages }}
+        </p>
       </div>
     }
   </div>

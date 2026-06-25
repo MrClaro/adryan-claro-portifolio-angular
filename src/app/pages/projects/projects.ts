@@ -13,6 +13,7 @@ import { takeUntil, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { GitHubCard } from '../../components/features/github-card/github-card';
 import { GitHubProject, GithubService } from '../../services/github';
 import { NGXLogger } from 'ngx-logger';
+import { LanguageService } from '../../services/language.service';
 
 @Component({
   selector: 'app-projects',
@@ -60,6 +61,7 @@ export class Projects implements OnInit, OnDestroy {
   constructor(
     private githubService: GithubService,
     private logger: NGXLogger,
+    public langService: LanguageService,
   ) {}
 
   ngOnInit(): void {
