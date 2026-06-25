@@ -1,0 +1,49 @@
+<div class="terminal-overlay" (click)="close.emit()">
+  <div class="terminal-window" (click)="$event.stopPropagation()">
+    <!-- Header/Titlebar -->
+    <div class="terminal-header">
+      <div class="terminal-dots">
+        <span class="dot close-dot" (click)="close.emit()"></span>
+        <span class="dot minimize-dot"></span>
+        <span class="dot maximize-dot"></span>
+      </div>
+      <div class="terminal-title">
+        <i class="ph ph-terminal-window"></i>
+        <span>guest@hat-os: ~</span>
+      </div>
+      <div class="header-right">
+        <span class="os-badge">HatOS v1.0</span>
+      </div>
+    </div>
+
+    <!-- Terminal Screen -->
+    <div class="terminal-screen" #historyContainer>
+      <div class="terminal-history">
+        @for (line of history(); track line) {
+          @if (line.type === 'ascii') {
+            <pre class="ascii-line">{{ line.text }}</pre>
+          } @else {
+            <p [class]="'terminal-line ' + line.type">{{ line.text }}</p>
+          }
+        }
+      </div>
+
+      <!-- Input Form -->
+      <form (submit)="handleCommand($event)" class="terminal-input-row">
+        <span class="terminal-prompt">guest@hat-os:~$</span>
+        <input
+          #cmdInput
+          type="text"
+          name="command"
+          [(ngModel)]="inputValue"
+          class="terminal-input"
+          autofocus
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+        />
+      </form>
+    </div>
+  </div>
+</div>
