@@ -1,33 +1,66 @@
-<article class="featured-project-row" [style.animation-delay]="getAnimationDelay()">
-  <div class="project-content">
-    <h2 class="content-title">{{ project.title }}</h2>
-    <p class="content-text">{{ project.content }}</p>
-    <div class="stack-technologies">
-      @for (tech of project.technologies; track tech) {
-        <div class="technology-item">
-          <i [class]="getTechnologyIcon(tech)"></i>
-          <p class="technologie-name">{{ tech }}</p>
+<article class="featured-project-card" [style.animation-delay]="getAnimationDelay()">
+  <!-- Header Cover -->
+  <div class="card-cover-wrapper">
+    @if (project.imageUrl && !project.imageUrl.includes('placehold.co')) {
+      <img [src]="project.imageUrl" [alt]="project.title" class="cover-image" />
+    } @else {
+      <!-- Premium dynamic gradient cover matching the language -->
+      <div class="cover-gradient" [style.background]="getGradient()">
+        <div class="cover-hat">
+          <svg viewBox="0 0 24 24" width="48" height="48" fill="currentColor">
+            <path d="M19 17H5c-1.1 0-2 .9-2 2s.9 2 2 2h14c1.1 0 2-.9 2-2s-.9-2-2-2zm-2-2V5c0-1.1-.9-2-2-2H9c-1.1 0-2 .9-2 2v10h10z" />
+          </svg>
         </div>
-      }
+        <span class="cover-tech-icon"><i [class]="getTechnologyIcon(project.language)"></i></span>
+      </div>
+    }
+    <div class="cover-overlay"></div>
+    <div class="language-badge">
+      <i [class]="getTechnologyIcon(project.language)"></i>
+      <span>{{ project.language }}</span>
     </div>
-    <div class="content-resources">
-      @for (resource of project.resources; track resource.url) {
-        <button mat-flat-button class="resource-btn" (click)="openUrl(resource.url)">
-          {{ resource.label }}
-        </button>
+  </div>
+
+  <!-- Body Content -->
+  <div class="card-body">
+    <div class="card-meta">
+      @if (project.stars > 0) {
+        <span class="meta-item stars">
+          <mat-icon>star</mat-icon>
+          <span>{{ project.stars }} Stars</span>
+        </span>
+      }
+      <span class="meta-item date">
+        <mat-icon>schedule</mat-icon>
+        <span>{{ project.date }}</span>
+      </span>
+    </div>
+
+    <h2 class="project-title">{{ project.title }}</h2>
+    <p class="project-description">{{ project.content }}</p>
+
+    <!-- Technologies -->
+    <div class="project-tags">
+      @for (tech of project.technologies; track tech) {
+        <span class="tag-badge">
+          <i [class]="getTechnologyIcon(tech)"></i>
+          <span>{{ tech }}</span>
+        </span>
       }
     </div>
   </div>
-  <div class="project-card">
-    <app-github-card
-      [repoName]="project.repoName"
-      [username]="project.username"
-      [description]="project.description"
-      [stars]="project.stars"
-      [language]="project.language"
-      [date]="project.date"
-      [githubUrl]="project.githubUrl"
-      [imageUrl]="project.imageUrl"
-    ></app-github-card>
+
+  <!-- Footer Actions -->
+  <div class="card-footer">
+    @for (resource of project.resources; track resource.url) {
+      <button mat-flat-button class="action-btn" (click)="openUrl(resource.url)">
+        <mat-icon>open_in_new</mat-icon>
+        <span>{{ resource.label }}</span>
+      </button>
+    }
+    <button mat-stroked-button class="action-btn github-btn" (click)="openUrl(project.githubUrl)">
+      <i class="devicon-github-original"></i>
+      <span>GitHub</span>
+    </button>
   </div>
 </article>

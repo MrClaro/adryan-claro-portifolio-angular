@@ -13,7 +13,7 @@ $shadow-red: rgba($red-fire, 0.3);
     CONTAINER DE PROJETOS
 ======================================== */
 .projects-container {
-  background: linear-gradient(180deg, $burgundy 0%, color.adjust($burgundy, $lightness: -5%) 100%);
+  background: linear-gradient(180deg, #0d0d12 0%, #060609 100%);
   position: relative;
   overflow: hidden;
 
@@ -24,8 +24,7 @@ $shadow-red: rgba($red-fire, 0.3);
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, $red-fire, transparent);
-    opacity: 0.5;
+    background: linear-gradient(90deg, transparent, rgba($red-fire, 0.3), transparent);
   }
 
   &::after {
@@ -33,8 +32,8 @@ $shadow-red: rgba($red-fire, 0.3);
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(circle at 20% 80%, rgba($red-fire, 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba($red-fire, 0.08) 0%, transparent 50%);
+      radial-gradient(circle at 10% 20%, rgba($burgundy, 0.2) 0%, transparent 50%),
+      radial-gradient(circle at 90% 80%, rgba($red-fire, 0.15) 0%, transparent 50%);
     pointer-events: none;
   }
 }
@@ -96,10 +95,12 @@ $shadow-red: rgba($red-fire, 0.3);
   }
 
   .featured-projects-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 4rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    gap: 2.5rem;
     margin-bottom: 5rem;
+    width: 100%;
+    justify-content: center;
   }
 
   .section-footer {

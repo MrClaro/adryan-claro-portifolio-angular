@@ -1,10 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
+import { forkJoin, of } from 'rxjs';
+import { catchError, take } from 'rxjs/operators';
 import { FeaturedProject } from '../featured-project/featured-project';
+import { PORTFOLIO_CONFIG } from '../../../config/portfolio.config';
+import { LanguageService } from '../../../services/language.service';
 import { IFeaturedProject } from '../../../interfaces/featured-project';
+import { GithubService } from '../../../services/github';
 
 @Component({
   selector: 'app-projects-list',
@@ -14,56 +19,70 @@ import { IFeaturedProject } from '../../../interfaces/featured-project';
   styleUrls: ['./projects-list.scss'],
 })
 export class ProjectsList implements OnInit {
-  featuredProjects: IFeaturedProject[] = [];
+  protected readonly langService = inject(LanguageService);
+  private readonly router = inject(Router);
+  private readonly githubService = inject(GithubService);
 
-  constructor(private router: Router) {}
+  // Sinal para armazenar as estatísticas dinâmicas indexadas por username/repoName
+  private dynamicStats = signal<{ [key: string]: { stars: number; date: string } }>({});
+
+  // Computed que mescla as traduções da configuração com as estatísticas em tempo real
+  featuredProjects = computed<IFeaturedProject[]>(() => {
+    this.langService.currentLanguage(); // Aciona reatividade com a mudança de idioma
+    const stats = this.dynamicStats();
+
+    return PORTFOLIO_CONFIG.featuredProjects.map((p) => {
+      const key = `${p.username}/${p.repoName}`;
+      return {
+        title: this.langService.translate(p.title),
+        content: this.langService.translate(p.content),
+        resourcesTitle: this.langService.translate(p.resourcesTitle),
+        resources: p.resources.map((r) => ({
+          label: this.langService.translate(r.label),
+          url: r.url,
+        })),
+        technologies: p.technologies,
+        repoName: p.repoName,
+        username: p.username,
+        description: this.langService.translate(p.description),
+        stars: stats[key]?.stars || 0,
+        language: p.language,
+        date: stats[key]?.date || p.date,
+        githubUrl: p.githubUrl,
+        imageUrl: p.imageUrl,
+      };
+    });
+  });
 
   ngOnInit(): void {
-    this.loadFeaturedProjects();
+    this.fetchRealStats();
   }
 
-  loadFeaturedProjects(): void {
-    this.featuredProjects = [
-      {
-        title: 'Recicla Tech',
-        content:
-          'O ReciclaTech é uma plataforma que visa promover a sustentabilidade e a economia circular, conectando pessoas que desejam doar eletrônicos usados em bom estado com aquelas que precisam adquirir esses itens. O projeto foi construído com foco em semântica, acessibilidade e responsividade, utilizando as melhores práticas do HTML5 e SCSS.',
-        resourcesTitle: 'Links Úteis',
-        resources: [
-          { label: 'Ver Demo', url: 'https://mrclaro.github.io/recicla-tech/' },
-          { label: 'Documentação', url: 'https://github.com/MrClaro/recicla-tech' },
-        ],
-        technologies: ['HTML', 'SASS'],
-        repoName: 'recicla-tech',
-        username: 'MrClaro',
-        description:
-          'Plataforma de conexão para economia circular e sustentabilidade, focada na doação e aquisição de eletrônicos usados.',
-        stars: 0,
-        language: 'SASS',
-        date: '2025-10-15',
-        githubUrl: 'https://github.com/MrClaro/recicla-tech/',
-        imageUrl: '/recicla-tech.png',
-      },
-      {
-        title: 'Challenge Forum Hub - Oracle Next Education (ONE)',
-        content:
-          'Este projeto faz parte do programa Oracle Next Education (ONE) se tratando do ultímo challenge proposto, onde o desafio consistiu em construir uma API REST completa de fórum, com funcionalidades de tópicos, respostas, cursos, matrículas e usuários, utilizando o ecossistema Spring Boot moderno e boas práticas de arquitetura Java.',
-        resourcesTitle: 'Links Úteis',
-        resources: [
-          { label: 'Ver Demo', url: 'https://github.com/MrClaro/challenge-forum-hub' },
-          { label: 'Documentação', url: 'https://github.com/MrClaro/challenge-forum-hub' },
-        ],
-        technologies: ['Java', 'Spring Boot', 'PostgreSQL', 'Docker'],
-        repoName: 'challenge-forum-hub',
-        username: 'MrClaro',
-        description: 'Quarto e ultimo challenge do programa ONE (Oracle Next Education)',
-        stars: 0,
-        language: 'Java',
-        date: '2025-08-05',
-        githubUrl: 'https://github.com/MrClaro/challenge-forum-hub',
-        imageUrl: '/challenge.jpeg',
-      },
-    ];
+  private fetchRealStats(): void {
+    const requests = PORTFOLIO_CONFIG.featuredProjects.map((p) =>
+      this.githubService.getRepository(p.username, p.repoName).pipe(
+        catchError(() => of(null))
+      )
+    );
+
+    forkJoin(requests)
+      .pipe(take(1))
+      .subscribe((repos) => {
+        const statsMap: { [key: string]: { stars: number; date: string } } = {};
+        
+        PORTFOLIO_CONFIG.featuredProjects.forEach((p, idx) => {
+          const key = `${p.username}/${p.repoName}`;
+          const realRepo = repos[idx];
+          if (realRepo) {
+            statsMap[key] = {
+              stars: realRepo.stars,
+              date: realRepo.date,
+            };
+          }
+        });
+
+        this.dynamicStats.set(statsMap);
+      });
   }
 
   navigateToAllProjects(): void {

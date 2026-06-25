@@ -3,13 +3,12 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
-import { GitHubCard } from '../github-card/github-card';
 import { IFeaturedProject } from '../../../interfaces/featured-project';
 
 @Component({
   selector: 'app-featured-project',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatIconModule, GitHubCard],
+  imports: [CommonModule, MatButtonModule, MatIconModule],
   templateUrl: './featured-project.html',
   styleUrls: ['./featured-project.scss'],
 })
@@ -31,6 +30,35 @@ export class FeaturedProject {
     return `${this.index * 0.15}s`;
   }
 
+  getGradient(): string {
+    const languageColors: { [key: string]: [string, string] } = {
+      javascript: ['#e5a50a', '#9e7204'],
+      typescript: ['#007ACC', '#004f82'],
+      python: ['#3776AB', '#1e3c5a'],
+      java: ['#ED8B00', '#8c5200'],
+      html: ['#E34F26', '#b02a05'],
+      css: ['#1572B6', '#0a426e'],
+      react: ['#23a1a1', '#115252'],
+      angular: ['#DD0031', '#9e0020'],
+      scss: ['#c45a67', '#80343e'],
+      vue: ['#4FC08D', '#2d8a5e'],
+      node: ['#339933', '#1e5c1e'],
+      php: ['#777BB4', '#474c7c'],
+      'c++': ['#00599C', '#00335e'],
+      'c#': ['#239120', '#104d10'],
+      ruby: ['#CC342D', '#7d1e19'],
+      go: ['#00ADD8', '#007094'],
+      rust: ['#CE422B', '#832818'],
+      kotlin: ['#7F52FF', '#4c26b8'],
+      swift: ['#FA7343', '#b83b14'],
+      markdown: ['#1a1a2e', '#16213e'],
+    };
+
+    const lang = (this.project?.language || '').toLowerCase().trim();
+    const colors = languageColors[lang] || ['#1e1e2f', '#0f0f1b'];
+    return `linear-gradient(135deg, ${colors[0]} 0%, ${colors[1]} 100%)`;
+  }
+
   getTechnologyIcon(techName: string): string {
     const normalizedTech = techName.toLowerCase().trim().replace(/\s+/g, '');
 
@@ -41,7 +69,12 @@ export class FeaturedProject {
       python: 'devicon-python-plain',
       java: 'devicon-java-plain',
       lua: 'devicon-lua-plain',
+      dart: 'devicon-dart-plain',
       bash: 'devicon-bash-plain',
+      shell: 'devicon-bash-plain',
+      sh: 'devicon-bash-plain',
+      c: 'devicon-c-plain',
+      sqlite: 'devicon-sqlite-plain',
 
       // Frameworks Frontend
       angular: 'devicon-angular-plain',
