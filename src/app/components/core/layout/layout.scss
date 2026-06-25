@@ -1,0 +1,51 @@
+.floating-terminal-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #cc0000 0%, #800000 100%);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 15px rgba(204, 0, 0, 0.4);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  .hat-emoji {
+    font-size: 28px;
+    transition: transform 0.3s ease;
+    line-height: 1;
+    display: inline-block;
+  }
+
+  &:hover {
+    transform: scale(1.1) translateY(-4px);
+    box-shadow: 0 8px 25px rgba(204, 0, 0, 0.6);
+    border-color: rgba(255, 255, 255, 0.4);
+
+    .hat-emoji {
+      transform: rotate(15deg) scale(1.1);
+    }
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+@media (max-width: 768px) {
+  .floating-terminal-btn {
+    bottom: 16px;
+    right: 16px;
+    width: 48px;
+    height: 48px;
+    
+    .hat-emoji {
+      font-size: 24px;
+    }
+  }
+}

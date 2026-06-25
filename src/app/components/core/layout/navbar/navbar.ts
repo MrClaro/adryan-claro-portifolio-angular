@@ -1,27 +1,30 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatToolbar } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
+import { LanguageService, Language } from '../../../../services/language.service';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.html',
   styleUrls: ['./navbar.scss'],
-  imports: [MatToolbar, MatIcon, RouterLink, RouterLinkActive],
+  imports: [MatToolbar, MatIcon, MatButtonModule, RouterLink, RouterLinkActive],
 })
-export class Navbar implements OnInit {
-  constructor(private logger: NGXLogger) {}
+export class Navbar {
+  protected readonly langService = inject(LanguageService);
+  private readonly logger = inject(NGXLogger);
 
   isNavbarVisible = true;
   isMenuOpen = false;
   isScrolled = false;
-  currentLang = 'pt';
+  
   private lastScrollTop = 0;
   private scrollThreshold = 50;
 
-  ngOnInit(): void {
-    this.currentLang = localStorage.getItem('language') || 'pt';
+  get currentLang(): Language {
+    return this.langService.currentLanguage();
   }
 
   @HostListener('window:scroll', [])
@@ -55,12 +58,8 @@ export class Navbar implements OnInit {
     document.body.style.overflow = '';
   }
 
-  changeLanguage(lang: 'pt' | 'en'): void {
-    this.currentLang = lang;
-    localStorage.setItem('language', lang);
-
-    //TODO: Implementar lógica de tradução
-    // Exemplo: this.translateService.use(lang);
+  changeLanguage(lang: Language): void {
+    this.langService.setLanguage(lang);
     this.logger.info(`Idioma alterado para: ${lang}`);
   }
 }

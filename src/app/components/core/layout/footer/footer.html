@@ -7,8 +7,7 @@
           <h3 class="brand-name">Adryan Claro</h3>
         </div>
         <p class="brand-description">
-          Desenvolvedor Full Stack apaixonado por criar soluções digitais inovadoras e funcionais.
-          Transformando ideias em realidade através de código limpo e eficiente.
+          {{ brandDescription }}
         </p>
         <div class="social-links">
           @for (social of socialLinks; track social.name) {
@@ -49,7 +48,9 @@
 
       <!-- Quick Contact -->
       <div class="footer-contact">
-        <h4 class="section-title">Contato Rápido</h4>
+        <h4 class="section-title">
+          {{ langService.isPt() ? 'Contato Rápido' : 'Quick Contact' }}
+        </h4>
         <div class="contact-info">
           <a [href]="'mailto:' + quickContact.email" class="contact-item">
             <mat-icon>email</mat-icon>
@@ -66,7 +67,7 @@
         </div>
         <button mat-flat-button class="cta-button" (click)="sendEmail()">
           <mat-icon>send</mat-icon>
-          Entre em Contato
+          {{ langService.isPt() ? 'Entre em Contato' : 'Get in Touch' }}
         </button>
       </div>
     </div>
@@ -75,18 +76,18 @@
 
     <div class="footer-bottom">
       <div class="copyright">
-        <p>© {{ currentYear }} <strong>Adryan Claro</strong>. Todos os direitos reservados.</p>
+        <p>© {{ currentYear }} <strong>Adryan Claro</strong>. {{ langService.isPt() ? 'Todos os direitos reservados.' : 'All rights reserved.' }}</p>
         <p class="made-with">
-          Feito com <mat-icon class="heart-icon">favorite</mat-icon> usando Angular
+          {{ langService.isPt() ? 'Feito com' : 'Made with' }} <mat-icon class="heart-icon">favorite</mat-icon> {{ langService.isPt() ? 'usando Angular' : 'using Angular' }}
         </p>
       </div>
 
       <div class="footer-meta">
-        <a class="meta-link">Política de Privacidade</a>
+        <a class="meta-link" routerLink="/politica-de-privacidade">{{ langService.isPt() ? 'Política de Privacidade' : 'Privacy Policy' }}</a>
         <span class="separator">•</span>
-        <a class="meta-link">Termos de Uso</a>
+        <a class="meta-link" routerLink="/termos-de-uso">{{ langService.isPt() ? 'Termos de Uso' : 'Terms of Use' }}</a>
         <span class="separator">•</span>
-        <button class="scroll-top" (click)="scrollToTop()" aria-label="Voltar ao topo">
+        <button class="scroll-top" (click)="scrollToTop()" [attr.aria-label]="langService.isPt() ? 'Voltar ao topo' : 'Scroll to top'">
           <mat-icon>arrow_upward</mat-icon>
         </button>
       </div>

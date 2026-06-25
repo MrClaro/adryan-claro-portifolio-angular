@@ -3,3 +3,17 @@
   <router-outlet></router-outlet>
 </main>
 <app-footer></app-footer>
+
+<!-- Floating Terminal Button (O Dev de Chapéu OS) -->
+<button
+  class="floating-terminal-btn"
+  (click)="toggleTerminal()"
+  title="Abrir Terminal Linux (Ctrl + `)"
+  aria-label="Abrir Terminal"
+>
+  <span class="hat-emoji">🎩</span>
+</button>
+
+@if (isTerminalOpen()) {
+  <app-terminal (close)="closeTerminal()"></app-terminal>
+}

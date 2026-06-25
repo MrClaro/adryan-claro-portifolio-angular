@@ -10,32 +10,32 @@
         mat-button
         routerLink="/sobre-mim"
         routerLinkActive="active"
-        aria-label="Ir para página Sobre mim"
+        [attr.aria-label]="langService.isPt() ? 'Ir para página Sobre mim' : 'Go to About me page'"
       >
         <mat-icon aria-hidden="true">person</mat-icon>
-        <span>Sobre mim</span>
+        <span>{{ langService.isPt() ? 'Sobre mim' : 'About me' }}</span>
       </a>
       <a
         mat-button
         routerLink="/projetos"
         routerLinkActive="active"
-        aria-label="Ir para página Projetos"
+        [attr.aria-label]="langService.isPt() ? 'Ir para página Projetos' : 'Go to Projects page'"
       >
         <mat-icon aria-hidden="true">work</mat-icon>
-        <span>Projetos</span>
+        <span>{{ langService.isPt() ? 'Projetos' : 'Projects' }}</span>
       </a>
     </nav>
 
     <span class="left-spacer-manual" aria-hidden="true"></span>
 
-    <a class="logo" routerLink="/" aria-label="Ir para página inicial" title="Página inicial">
+    <a class="logo" routerLink="/" [attr.aria-label]="langService.isPt() ? 'Ir para página inicial' : 'Go to home page'" [title]="langService.isPt() ? 'Página inicial' : 'Home page'">
       <img src="./logo.png" alt="Logotipo" loading="eager" width="80" height="80" />
     </a>
 
     <span class="right-spacer-manual" aria-hidden="true"></span>
 
     <div class="main-links main-links-right-group">
-      <a mat-button routerLink="/blog" routerLinkActive="active" aria-label="Ir para página Blog">
+      <a mat-button routerLink="/blog" routerLinkActive="active" [attr.aria-label]="langService.isPt() ? 'Ir para página Blog' : 'Go to Blog page'">
         <mat-icon aria-hidden="true">article</mat-icon>
         <span>Blog</span>
       </a>
@@ -46,7 +46,7 @@
         (click)="toggleMenu()"
         [class.active]="isMenuOpen"
         [attr.aria-expanded]="isMenuOpen"
-        aria-label="Abrir menu de navegação"
+        [attr.aria-label]="langService.isPt() ? 'Abrir menu de navegação' : 'Open navigation menu'"
         aria-controls="mobile-menu"
       >
         <span class="hamburger-line" aria-hidden="true"></span>
@@ -55,26 +55,45 @@
       </button>
 
       <div class="lang-selector" role="group" aria-label="Seletor de idioma">
-        <button
-          mat-flat-button
-          color="accent"
-          type="button"
-          (click)="changeLanguage('pt')"
-          [attr.aria-pressed]="currentLang === 'pt'"
-          aria-label="Português"
-        >
-          <span>PT</span>
-        </button>
+        @if (currentLang === 'pt') {
+          <button
+            mat-flat-button
+            color="accent"
+            type="button"
+            aria-label="Português"
+          >
+            <span>PT</span>
+          </button>
+        } @else {
+          <button
+            mat-button
+            type="button"
+            (click)="changeLanguage('pt')"
+            aria-label="Português"
+          >
+            <span>PT</span>
+          </button>
+        }
         <span class="separator" aria-hidden="true"></span>
-        <button
-          mat-button
-          type="button"
-          (click)="changeLanguage('en')"
-          [attr.aria-pressed]="currentLang === 'en'"
-          aria-label="English"
-        >
-          <span>EN</span>
-        </button>
+        @if (currentLang === 'en') {
+          <button
+            mat-flat-button
+            color="accent"
+            type="button"
+            aria-label="English"
+          >
+            <span>EN</span>
+          </button>
+        } @else {
+          <button
+            mat-button
+            type="button"
+            (click)="changeLanguage('en')"
+            aria-label="English"
+          >
+            <span>EN</span>
+          </button>
+        }
       </div>
     </div>
   </div>
@@ -87,7 +106,7 @@
   [attr.aria-hidden]="!isMenuOpen"
   role="dialog"
   aria-modal="true"
-  aria-label="Menu de navegação mobile"
+  [attr.aria-label]="langService.isPt() ? 'Menu de navegação mobile' : 'Mobile navigation menu'"
 >
   <nav
     id="mobile-menu"
@@ -104,7 +123,7 @@
       tabindex="0"
     >
       <mat-icon aria-hidden="true">person</mat-icon>
-      <span>Sobre mim</span>
+      <span>{{ langService.isPt() ? 'Sobre mim' : 'About me' }}</span>
     </a>
 
     <a
@@ -115,7 +134,7 @@
       tabindex="0"
     >
       <mat-icon aria-hidden="true">work</mat-icon>
-      <span>Projetos</span>
+      <span>{{ langService.isPt() ? 'Projetos' : 'Projects' }}</span>
     </a>
 
     <a mat-button routerLink="/blog" routerLinkActive="active" (click)="closeMenu()" tabindex="0">

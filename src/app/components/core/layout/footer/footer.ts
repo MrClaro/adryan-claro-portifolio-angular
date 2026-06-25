@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { PORTFOLIO_CONFIG } from '../../../../config/portfolio.config';
+import { LanguageService } from '../../../../services/language.service';
 
 interface FooterLink {
   label: string;
@@ -14,67 +16,68 @@ interface FooterSection {
   links: FooterLink[];
 }
 
-interface SocialLink {
-  icon: string;
-  name: string;
-  url: string;
-}
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatButtonModule],
+  imports: [CommonModule, MatIconModule, MatButtonModule, RouterLink],
   templateUrl: './footer.html',
   styleUrls: ['./footer.scss'],
 })
 export class Footer {
+  protected readonly langService = inject(LanguageService);
+
   currentYear = new Date().getFullYear();
 
-  footerSections: FooterSection[] = [
-    {
-      title: 'Navegação',
-      links: [
-        { label: 'Início', url: '#hero' },
-        { label: 'Sobre', url: '#about' },
-        { label: 'Expertise', url: '#expertise' },
-        { label: 'Projetos', url: '#projects' },
-        { label: 'Contato', url: '#contact' },
-      ],
-    },
-    {
-      title: 'Projetos',
-      links: [
-        { label: 'Open Source', url: 'https://github.com/MrClaro', external: true },
-        { label: 'Blog', url: '#blog' },
-      ],
-    },
-    {
-      title: 'Recursos',
-      links: [
-        { label: 'Currículo', url: '#resume' },
-        { label: 'Artigos', url: 'https://www.linkedin.com/in/adryan-claro/' },
-      ],
-    },
-  ];
+  get brandDescription(): string {
+    return this.langService.isPt()
+      ? 'Desenvolvedor Full Stack apaixonado por criar soluções digitais inovadoras e funcionais. Transformando ideias em realidade através de código limpo e eficiente.'
+      : 'Full Stack Developer passionate about creating innovative and functional digital solutions. Turning ideas into reality through clean and efficient code.';
+  }
 
-  socialLinks: SocialLink[] = [
-    {
-      icon: 'devicon-github-original',
-      name: 'GitHub',
-      url: 'https://github.com/MrClaro',
-    },
-    {
-      icon: 'devicon-linkedin-plain',
-      name: 'LinkedIn',
-      url: 'https://www.linkedin.com/in/adryan-claro/',
-    },
-  ];
+  get footerSections(): FooterSection[] {
+    this.langService.currentLanguage();
+    
+    return [
+      {
+        title: this.langService.isPt() ? 'Navegação' : 'Navigation',
+        links: [
+          { label: this.langService.isPt() ? 'Início' : 'Home', url: '#hero' },
+          { label: this.langService.isPt() ? 'Sobre' : 'About', url: '#about' },
+          { label: this.langService.isPt() ? 'Expertise' : 'Expertise', url: '#expertise' },
+          { label: this.langService.isPt() ? 'Projetos' : 'Projects', url: '#projects' },
+          { label: this.langService.isPt() ? 'Contato' : 'Contact', url: '#contact' },
+        ],
+      },
+      {
+        title: this.langService.isPt() ? 'Projetos' : 'Projects',
+        links: [
+          { label: 'Open Source', url: PORTFOLIO_CONFIG.socialLinks[0].url, external: true },
+          { label: 'Blog', url: '#blog' },
+        ],
+      },
+      {
+        title: this.langService.isPt() ? 'Recursos' : 'Resources',
+        links: [
+          { label: this.langService.isPt() ? 'Currículo' : 'Resume', url: '#resume' },
+          { label: this.langService.isPt() ? 'Artigos' : 'Articles', url: PORTFOLIO_CONFIG.socialLinks[1].url, external: true },
+        ],
+      },
+    ];
+  }
 
-  quickContact = {
-    email: 'adryan.contatoprofissional@gmail.com',
-    phone: '+55 (14) 99872-4427',
-    location: 'Ourinhos, SP',
-  };
+  get socialLinks() {
+    return PORTFOLIO_CONFIG.socialLinks;
+  }
+
+  get quickContact() {
+    return {
+      email: PORTFOLIO_CONFIG.profile.email,
+      phone: PORTFOLIO_CONFIG.profile.phone,
+      location: PORTFOLIO_CONFIG.profile.location,
+    };
+  }
 
   openLink(url: string, external?: boolean): void {
     if (external) {

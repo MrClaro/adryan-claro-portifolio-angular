@@ -12,12 +12,12 @@ $shadow-soft: rgba($black-absolute, 0.08);
     FOOTER
 ======================================== */
 .footer {
-  background: linear-gradient(180deg, $charcoal-gray 0%, $black-absolute 100%);
+  background: linear-gradient(180deg, #0a0a0f 0%, #050507 100%);
   color: $primary-color;
   padding: 4rem 2rem 2rem;
   position: relative;
   overflow: hidden;
-  margin-top: 5rem;
+  margin-top: 0;
 
   &::before {
     content: '';
