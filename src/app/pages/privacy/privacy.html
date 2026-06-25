@@ -1,0 +1,76 @@
+<section class="legal-section">
+  <div class="legal-container">
+    <h1 class="legal-title">
+      {{ langService.isPt() ? 'Política de Privacidade' : 'Privacy Policy' }}
+    </h1>
+    <p class="legal-subtitle">
+      {{ langService.isPt() ? 'Última atualização: Junho 2026' : 'Last updated: June 2026' }}
+    </p>
+
+    <div class="legal-content">
+      @if (langService.isPt()) {
+        <h2>1. Coleta de Informações</h2>
+        <p>
+          Este Portfólio é principalmente de caráter informativo. Não coletamos dados de identificação pessoal dos usuários que navegam pelas páginas, exceto quando fornecidos voluntariamente por meio do formulário de contato.
+        </p>
+
+        <h2>2. Formulário de Contato</h2>
+        <p>
+          Se você optar por nos enviar uma mensagem através do formulário de contato, coletamos seu nome, e-mail e o conteúdo da mensagem. Essas informações são usadas estritamente para responder à sua solicitação e não são compartilhadas com terceiros para fins de marketing.
+        </p>
+
+        <h2>3. Armazenamento Local (Cookies / LocalStorage)</h2>
+        <p>
+          Utilizamos o recurso de <code>LocalStorage</code> do seu navegador exclusivamente para guardar a sua preferência de idioma (Português ou Inglês). Isso nos permite carregar o site no seu idioma preferencial nas suas próximas visitas. Nenhum cookie de rastreamento de publicidade é utilizado.
+        </p>
+
+        <h2>4. Serviços de Terceiros e APIs</h2>
+        <p>
+          Este site consome a API oficial do GitHub para buscar a lista de projetos, número de estrelas e datas de atualização. O GitHub pode coletar metadados técnicos de requisições de rede de acordo com suas próprias políticas de privacidade.
+        </p>
+
+        <h2>5. Direitos do Usuário</h2>
+        <p>
+          Você tem o direito de solicitar a exclusão de qualquer mensagem ou dado enviado através do formulário de contato a qualquer momento. Para isso, basta nos enviar um e-mail com a solicitação.
+        </p>
+
+        <h2>6. Contato</h2>
+        <p>
+          Para dúvidas ou solicitações referentes à sua privacidade e tratamento de dados, envie um e-mail para:
+          <a [href]="'mailto:' + email" class="contact-link">{{ email }}</a>.
+        </p>
+      } @else {
+        <h2>1. Collection of Information</h2>
+        <p>
+          This Portfolio is primarily informational. We do not collect personally identifiable information from users browsing the pages, except when voluntarily provided through the contact form.
+        </p>
+
+        <h2>2. Contact Form</h2>
+        <p>
+          If you choose to send us a message through the contact form, we collect your name, email, and the content of your message. This information is strictly used to reply to your inquiry and is not shared with third parties for marketing purposes.
+        </p>
+
+        <h2>3. Local Storage (Cookies / LocalStorage)</h2>
+        <p>
+          We use your browser's <code>LocalStorage</code> feature exclusively to store your language preference (Portuguese or English). This allows us to load the website in your preferred language on subsequent visits. No advertising tracking cookies are used.
+        </p>
+
+        <h2>4. Third-Party Services and APIs</h2>
+        <p>
+          This website consumes the official GitHub API to fetch the list of projects, number of stars, and update dates. GitHub may collect technical metadata from network requests in accordance with their own privacy policies.
+        </p>
+
+        <h2>5. User Rights</h2>
+        <p>
+          You have the right to request the deletion of any message or data sent through the contact form at any time. To do so, simply send us an email with your request.
+        </p>
+
+        <h2>6. Contact</h2>
+        <p>
+          For questions or requests regarding your privacy and data handling, please email us at:
+          <a [href]="'mailto:' + email" class="contact-link">{{ email }}</a>.
+        </p>
+      }
+    </div>
+  </div>
+</section>

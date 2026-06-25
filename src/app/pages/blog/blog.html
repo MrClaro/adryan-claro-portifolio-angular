@@ -1,0 +1,135 @@
+<section class="blog-section">
+  <div class="blog-container">
+    <!-- Header -->
+    <div class="blog-header">
+      <h1 class="section-title">
+        {{ langService.isPt() ? 'Meu Blog Técnico' : 'My Technical Blog' }}
+      </h1>
+      <p class="section-subtitle">
+        {{ langService.isPt() ? 'Artigos sobre Angular, Java, Linux e experiências reais de desenvolvimento' : 'Articles about Angular, Java, Linux, and real-world development experiences' }}
+      </p>
+    </div>
+
+    <!-- Filters Section -->
+    <div class="filters-section">
+      <div class="search-box">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>
+            {{ langService.isPt() ? 'Buscar artigos' : 'Search articles' }}
+          </mat-label>
+          <input
+            matInput
+            [ngModel]="searchTerm()"
+            (ngModelChange)="searchTerm.set($event)"
+            [placeholder]="langService.isPt() ? 'Digite termos para busca...' : 'Type search terms...'"
+            autocomplete="off"
+          />
+          <mat-icon matPrefix>search</mat-icon>
+          @if (searchTerm()) {
+            <button
+              mat-icon-button
+              matSuffix
+              (click)="searchTerm.set('')"
+              [attr.aria-label]="langService.isPt() ? 'Limpar busca' : 'Clear search'"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          }
+        </mat-form-field>
+      </div>
+
+      <div class="tags-container">
+        <button
+          mat-stroked-button
+          class="tag-btn"
+          [class.active]="selectedTag() === 'all'"
+          (click)="selectTag('all')"
+        >
+          {{ langService.isPt() ? 'Todos' : 'All' }}
+        </button>
+        @for (tag of tags(); track tag) {
+          <button
+            mat-stroked-button
+            class="tag-btn"
+            [class.active]="selectedTag() === tag"
+            (click)="selectTag(tag)"
+          >
+            {{ tag }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    @if (filteredArticles().length === 0) {
+      <div class="empty-state">
+        <mat-icon class="empty-icon">search_off</mat-icon>
+        <h3 class="empty-title">
+          {{ langService.isPt() ? 'Nenhum artigo encontrado' : 'No articles found' }}
+        </h3>
+        <p class="empty-message">
+          {{ langService.isPt() ? 'Tente ajustar os filtros ou buscar outros termos.' : 'Try adjusting the filters or searching for other terms.' }}
+        </p>
+        <button mat-flat-button color="accent" (click)="clearFilters()">
+          <mat-icon>refresh</mat-icon>
+          {{ langService.isPt() ? 'Limpar Filtros' : 'Clear Filters' }}
+        </button>
+      </div>
+    }
+
+    <!-- Articles Grid -->
+    @if (filteredArticles().length > 0) {
+      <div class="articles-grid">
+        @for (art of filteredArticles(); track art.title; let i = $index) {
+          <article
+            class="article-card"
+            (click)="openArticle(art.url)"
+            [style.animation-delay]="getAnimationDelay(i)"
+          >
+            <!-- Card Image Cover or dynamic Hat Cover -->
+            <div class="card-cover">
+              @if (art.coverImage) {
+                <img [src]="art.coverImage" [alt]="art.title" />
+              } @else {
+                <div class="fallback-cover">
+                  <span class="cover-hat">🎩</span>
+                  <span class="cover-title">adryan.dev</span>
+                </div>
+              }
+              <div class="cover-overlay"></div>
+            </div>
+
+            <!-- Card Content -->
+            <div class="card-content">
+              <div class="card-meta">
+                <span class="meta-date">
+                  <mat-icon>schedule</mat-icon>
+                  {{ art.date }}
+                </span>
+                <span class="meta-read-time">
+                  <mat-icon>menu_book</mat-icon>
+                  {{ art.readTime }}
+                </span>
+              </div>
+
+              <h2 class="card-title">{{ art.title }}</h2>
+              <p class="card-description">{{ art.description }}</p>
+
+              <div class="card-footer">
+                <div class="card-tags">
+                  @for (tag of art.tags; track tag) {
+                    <span class="tag-badge">#{{ tag }}</span>
+                  }
+                </div>
+                <span class="read-more-btn">
+                  {{ langService.isPt() ? 'Ler Artigo' : 'Read Article' }}
+                  <mat-icon>arrow_forward</mat-icon>
+                </span>
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </div>
+</section>

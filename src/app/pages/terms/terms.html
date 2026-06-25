@@ -1,0 +1,76 @@
+<section class="legal-section">
+  <div class="legal-container">
+    <h1 class="legal-title">
+      {{ langService.isPt() ? 'Termos de Uso' : 'Terms of Use' }}
+    </h1>
+    <p class="legal-subtitle">
+      {{ langService.isPt() ? 'Última atualização: Junho 2026' : 'Last updated: June 2026' }}
+    </p>
+
+    <div class="legal-content">
+      @if (langService.isPt()) {
+        <h2>1. Aceitação dos Termos</h2>
+        <p>
+          Ao acessar e usar este site (o "Portfólio"), você concorda em cumprir e estar vinculado a estes Termos de Uso. Se você não concordar com qualquer parte destes termos, não deverá utilizar este site.
+        </p>
+
+        <h2>2. Propriedade Intelectual</h2>
+        <p>
+          Todo o conteúdo deste site, incluindo textos, códigos-fonte, imagens, logotipos e designs, é propriedade de <strong>{{ name }}</strong> e está protegido por leis de direitos autorais e propriedade intelectual. Você não pode reproduzir, distribuir ou explorar comercialmente qualquer conteúdo sem autorização prévia por escrito.
+        </p>
+
+        <h2>3. Links para Terceiros</h2>
+        <p>
+          Este Portfólio contém links para sites externos (como GitHub, LinkedIn e projetos hospedados). Não temos controle sobre o conteúdo ou práticas de privacidade desses sites de terceiros, e não assumimos qualquer responsabilidade por eles.
+        </p>
+
+        <h2>4. Limitação de Responsabilidade</h2>
+        <p>
+          As informações e códigos demonstrados neste site são fornecidos "como estão", para fins informativos e de portfólio. Não oferecemos garantias de que os projetos funcionem sem interrupções ou erros em todos os ambientes.
+        </p>
+
+        <h2>5. Modificações dos Termos</h2>
+        <p>
+          Reservamo-nos o direito de alterar estes Termos de Uso a qualquer momento, sem aviso prévio. O uso continuado do site após alterações constituirá a aceitação dos novos termos.
+        </p>
+
+        <h2>6. Contato</h2>
+        <p>
+          Se você tiver alguma dúvida sobre estes Termos de Uso, entre em contato através do e-mail:
+          <a [href]="'mailto:' + email" class="contact-link">{{ email }}</a>.
+        </p>
+      } @else {
+        <h2>1. Acceptance of Terms</h2>
+        <p>
+          By accessing and using this website (the "Portfolio"), you agree to comply with and be bound by these Terms of Use. If you do not agree with any part of these terms, you must not use this website.
+        </p>
+
+        <h2>2. Intellectual Property</h2>
+        <p>
+          All content on this website, including text, source code, images, logos, and designs, is the property of <strong>{{ name }}</strong> and is protected by copyright and intellectual property laws. You may not reproduce, distribute, or commercially exploit any content without prior written permission.
+        </p>
+
+        <h2>3. Third-Party Links</h2>
+        <p>
+          This Portfolio contains links to external websites (such as GitHub, LinkedIn, and hosted projects). We have no control over the content or privacy practices of these third-party sites, and assume no responsibility for them.
+        </p>
+
+        <h2>4. Limitation of Liability</h2>
+        <p>
+          The information and code demonstrated on this website are provided "as is," for informational and portfolio purposes. We offer no guarantees that the projects will function without interruptions or errors in all environments.
+        </p>
+
+        <h2>5. Modifications of Terms</h2>
+        <p>
+          We reserve the right to change these Terms of Use at any time without prior notice. Continued use of the website after changes will constitute acceptance of the new terms.
+        </p>
+
+        <h2>6. Contact</h2>
+        <p>
+          If you have any questions about these Terms of Use, please contact us via email at:
+          <a [href]="'mailto:' + email" class="contact-link">{{ email }}</a>.
+        </p>
+      }
+    </div>
+  </div>
+</section>
