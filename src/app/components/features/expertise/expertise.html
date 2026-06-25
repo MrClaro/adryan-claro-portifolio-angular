@@ -1,9 +1,11 @@
 <section id="expertise" class="expertise-section">
   <div class="expertise-container">
     <div class="expertise-header">
-      <h2 class="section-title">Áreas de Expertise</h2>
+      <h2 class="section-title">
+        {{ langService.isPt() ? 'Áreas de Expertise' : 'Areas of Expertise' }}
+      </h2>
       <p class="section-subtitle">
-        Serviços especializados para transformar suas ideias em soluções digitais de alta qualidade
+        {{ langService.isPt() ? 'Serviços especializados para transformar suas ideias em soluções digitais de alta qualidade' : 'Specialized services to turn your ideas into high-quality digital solutions' }}
       </p>
     </div>
 
@@ -32,7 +34,7 @@
           @if (item.highlighted) {
             <div class="highlight-badge">
               <mat-icon>star</mat-icon>
-              <span>Destaque</span>
+              <span>{{ langService.isPt() ? 'Destaque' : 'Featured' }}</span>
             </div>
           }
         </article>
@@ -40,13 +42,15 @@
     </div>
 
     <div class="expertise-cta">
-      <h3 class="cta-title">Pronto para começar seu projeto?</h3>
+      <h3 class="cta-title">
+        {{ langService.isPt() ? 'Pronto para começar seu projeto?' : 'Ready to start your project?' }}
+      </h3>
       <p class="cta-text">
-        Vamos conversar sobre como posso ajudar a transformar sua visão em realidade
+        {{ langService.isPt() ? 'Vamos conversar sobre como posso ajudar a transformar sua visão em realidade' : "Let's talk about how I can help bring your vision to life" }}
       </p>
       <button mat-flat-button class="cta-button" (click)="sendEmail()">
         <mat-icon>email</mat-icon>
-        Entre em Contato
+        {{ langService.isPt() ? 'Entre em Contato' : 'Get in Touch' }}
       </button>
     </div>
   </div>
