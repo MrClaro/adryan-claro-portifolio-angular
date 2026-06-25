@@ -1,21 +1,36 @@
 <section id="about" class="about-section">
   <div class="profile-clip-wrapper">
     <div class="profile-picture-container">
-      <img src="./adryan-claro-perfil.jpeg" alt="Foto de perfil de Adryan Claro" />
+      <img src="./adryan-claro-perfil.jpeg" [alt]="langService.isPt() ? 'Foto de perfil de Adryan Claro' : 'Profile photo of Adryan Claro'" />
     </div>
   </div>
   <div class="about-texts-container">
-    <h1>Sobre mim</h1>
-    <p>
-      Olá! Sou Adryan Claro, um <span>Desenvolvedor Full-Stack</span> com mais de um ano de
-      experiência focada em soluções <span>escaláveis e de alto desempenho</span>. Meu core é
-      <strong>TypeScript e Java</strong>, trabalhando com <strong>Angular/VueJS</strong> no Frontend
-      e <strong>Spring Boot/Quarkus, NestJS/Express</strong> no Backend. Tenho domínio sólido em
-      Docker, SQL e metodologias ágeis. Atualmente, sou aluno em programas avançados da
-      <span>Oracle ONE, Amazon e Google</span>, e curso Engenharia de Software (conclusão em 2027).
-    </p>
+    <h1>{{ langService.isPt() ? 'Sobre mim' : 'About me' }}</h1>
+    
+    @if (langService.isPt()) {
+      <p>
+        Olá! Sou Adryan Claro, um <span>Desenvolvedor Full-Stack</span> com mais de um ano de
+        experiência focada em soluções <span>escaláveis e de alto desempenho</span>. Meu core é
+        <strong>TypeScript e Java</strong>, trabalhando com <strong>Angular/VueJS</strong> no Frontend
+        e <strong>Spring Boot/Quarkus, NestJS/Express</strong> no Backend. Tenho domínio sólido em
+        Docker, SQL e metodologias ágeis. Atualmente, sou aluno em programas avançados da
+        <span>Oracle ONE, Amazon e Google</span>, e curso Engenharia de Software (conclusão em 2027).
+      </p>
+    } @else {
+      <p>
+        Hello! I'm Adryan Claro, a <span>Full-Stack Developer</span> with over a year of
+        experience focused on <span>scalable and high-performance</span> solutions. My core stack is
+        <strong>TypeScript and Java</strong>, working with <strong>Angular/VueJS</strong> on the Frontend
+        and <strong>Spring Boot/Quarkus, NestJS/Express</strong> on the Backend. I have a solid command of
+        Docker, SQL, and agile methodologies. Currently, I am a student in advanced programs from
+        <span>Oracle ONE, Amazon, and Google</span>, and I am studying Software Engineering (graduation in 2027).
+      </p>
+    }
+
     <a class="about-button-container" routerLink="/sobre-mim">
-      <span class="about-button-text">Conheça mais sobre mim</span>
+      <span class="about-button-text">
+        {{ langService.isPt() ? 'Conheça mais sobre mim' : 'Learn more about me' }}
+      </span>
       <i class="ph ph-arrow-right"></i>
     </a>
   </div>

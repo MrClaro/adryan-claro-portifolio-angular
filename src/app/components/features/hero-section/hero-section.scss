@@ -325,52 +325,69 @@ app-skills-marquee {
 /* ========================================
      RESPONSIVIDADE
 ======================================== */
-/* Small Desktop */
+/* Small Desktop & Tablet */
 @media (max-width: 1248px) {
   .container {
     transform: translate(-50%, -55%);
+    width: 90%;
   }
 
   .main-title {
-    font-size: 4.5rem;
+    font-size: 4.2rem;
     letter-spacing: -1.5px;
   }
 
   .align-subtitles {
-    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.25rem;
+    width: 100%;
+    margin-top: 1.5rem;
+  }
+
+  .typewriter-text {
+    padding-left: 0;
+    text-align: center;
+    min-width: unset;
+    font-size: 1.35rem;
+  }
+
+  .subtitle-container {
+    justify-content: center;
+    padding: 6px 14px;
+    span {
+      font-size: 1.3rem;
+    }
+    i {
+      font-size: 1.5rem;
+    }
   }
 
   .scroll-indicator {
+    bottom: 80px;
     i {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
     }
     p {
-      font-size: 1.4rem;
+      font-size: 1.3rem;
     }
   }
 }
 
-/* Tablet */
+/* Tablet Portrait */
 @media (max-width: 1024px) {
-  .container {
-    transform: translate(-50%, -55%);
-  }
-
   .main-title {
-    font-size: 4.5rem;
-    letter-spacing: -1.5px;
+    font-size: 3.8rem;
   }
 
-  .align-subtitles {
-    display: none;
+  .typewriter-text {
+    font-size: 1.25rem;
   }
 
-  .scroll-indicator {
-    i {
-      font-size: 1rem;
-    }
-    p {
-      font-size: 1rem;
+  .subtitle-container {
+    span {
+      font-size: 1.2rem;
     }
   }
 }
@@ -380,10 +397,11 @@ app-skills-marquee {
   .container {
     transform: translate(-50%, -50%);
     align-items: center;
+    width: 95%;
   }
 
   .main-title {
-    font-size: 3.5rem;
+    font-size: 3rem;
     padding: 5px;
     white-space: normal;
     text-align: center;
@@ -391,7 +409,30 @@ app-skills-marquee {
   }
 
   .align-subtitles {
-    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+    margin-top: 1.25rem;
+  }
+
+  .typewriter-text {
+    padding-left: 0;
+    text-align: center;
+    min-width: unset;
+    font-size: 1.15rem;
+  }
+
+  .subtitle-container {
+    justify-content: center;
+    padding: 6px 12px;
+    span {
+      font-size: 1.1rem;
+    }
+    i {
+      font-size: 1.3rem;
+    }
   }
 
   .scroll-indicator {
@@ -407,32 +448,34 @@ app-skills-marquee {
 
   .container {
     transform: translate(-50%, -50%);
-    padding: 0 20px;
+    padding: 0 15px;
   }
 
   .main-title {
-    font-size: 2.5rem;
+    font-size: 2.3rem;
     padding: 5px;
     letter-spacing: -0.5px;
   }
 
-  .align-subtitles {
-    display: none;
+  .typewriter-text {
+    font-size: 1.05rem;
   }
 
-  .scroll-indicator {
-    display: none;
+  .subtitle-container {
+    padding: 5px 10px;
+    span {
+      font-size: 1rem;
+    }
+    i {
+      font-size: 1.1rem;
+    }
   }
 }
 
 /* Pobre alma */
 @media (max-width: 360px) {
   .main-title {
-    font-size: 2rem;
+    font-size: 1.9rem;
     letter-spacing: 0;
-  }
-
-  .scroll-indicator {
-    display: none;
   }
 }

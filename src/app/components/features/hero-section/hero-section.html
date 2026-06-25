@@ -3,17 +3,19 @@
     <div class="container">
       <h1
         class="main-title"
-        [appTypewriter]="['Adryan Claro', 'O Dev de Chapéu']"
+        [appTypewriter]="nameTypewriter()"
         [period]="5000"
       ></h1>
       <div class="align-subtitles">
         <p
           class="typewriter-text"
-          [appTypewriter]="['Desenvolvedor Full-Stack', 'Entusiasta Linux', 'Designer']"
+          [appTypewriter]="subtitlesTypewriter()"
           [period]="2000"
         ></p>
         <a class="subtitle-container" routerLink="/blog">
-          <span class="subtitle">Acesse meu blog</span>
+          <span class="subtitle">
+            {{ langService.isPt() ? 'Acesse meu blog' : 'Access my blog' }}
+          </span>
           <i class="ph ph-arrow-right"></i>
         </a>
       </div>
